@@ -1,0 +1,15 @@
+c:\users\mac\documents\visual studio 2010\Projects\Carcassonne\Carcassonne.Web\bin\Carcassonne.Web.dll
+c:\users\mac\documents\visual studio 2010\Projects\Carcassonne\Carcassonne.Web\bin\Carcassonne.Web.pdb
+c:\users\mac\documents\visual studio 2010\Projects\Carcassonne\Carcassonne.Web\obj\Debug\ResolveAssemblyReference.cache
+c:\users\mac\documents\visual studio 2010\Projects\Carcassonne\Carcassonne.Web\obj\Debug\Carcassonne.Web.dll
+c:\users\mac\documents\visual studio 2010\Projects\Carcassonne\Carcassonne.Web\obj\Debug\Carcassonne.Web.pdb
+C:\Users\Arizona\Desktop\Carcassonne\Carcassonne.Web\bin\Carcassonne.Web.dll
+C:\Users\Arizona\Desktop\Carcassonne\Carcassonne.Web\bin\Carcassonne.Web.pdb
+C:\Users\Arizona\Desktop\Carcassonne\Carcassonne.Web\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Arizona\Desktop\Carcassonne\Carcassonne.Web\obj\Debug\Carcassonne.Web.dll
+C:\Users\Arizona\Desktop\Carcassonne\Carcassonne.Web\obj\Debug\Carcassonne.Web.pdb
+C:\Users\Mac\Desktop\Carcassonne\Carcassonne.Web\bin\Carcassonne.Web.dll
+C:\Users\Mac\Desktop\Carcassonne\Carcassonne.Web\bin\Carcassonne.Web.pdb
+C:\Users\Mac\Desktop\Carcassonne\Carcassonne.Web\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Mac\Desktop\Carcassonne\Carcassonne.Web\obj\Debug\Carcassonne.Web.dll
+C:\Users\Mac\Desktop\Carcassonne\Carcassonne.Web\obj\Debug\Carcassonne.Web.pdb

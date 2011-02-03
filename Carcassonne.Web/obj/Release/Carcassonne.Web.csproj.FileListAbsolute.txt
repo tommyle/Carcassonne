@@ -1,0 +1,5 @@
+C:\Users\Mac\documents\visual studio 2010\Projects\Carcassonne\Carcassonne.Web\bin\Carcassonne.Web.dll
+C:\Users\Mac\documents\visual studio 2010\Projects\Carcassonne\Carcassonne.Web\bin\Carcassonne.Web.pdb
+C:\Users\Mac\documents\visual studio 2010\Projects\Carcassonne\Carcassonne.Web\obj\Release\ResolveAssemblyReference.cache
+C:\Users\Mac\documents\visual studio 2010\Projects\Carcassonne\Carcassonne.Web\obj\Release\Carcassonne.Web.dll
+C:\Users\Mac\documents\visual studio 2010\Projects\Carcassonne\Carcassonne.Web\obj\Release\Carcassonne.Web.pdb

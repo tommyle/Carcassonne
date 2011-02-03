@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="Carcassonne.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="768" d:DesignWidth="1024">
+
+    <Canvas x:Name="gameSurface" Background="White">
+        <Image Source="Media/table.jpg" Opacity="1" Canvas.Left="0" Canvas.Top="0" DataContext="{Binding}" />
+
+        <Rectangle x:Name="checkmark" 
+                   Width="76" Height="76"
+                   HorizontalAlignment="Left" Canvas.Left="936" Canvas.Top="12">
+            <Rectangle.Fill>
+                <ImageBrush x:Name="tileImage" ImageSource="Media/checkmark.png">
+                    <ImageBrush.RelativeTransform>
+                        <RotateTransform CenterX="0.5" CenterY="0.5" Angle="0" />
+                    </ImageBrush.RelativeTransform>
+                </ImageBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+    </Canvas>
+</UserControl>
