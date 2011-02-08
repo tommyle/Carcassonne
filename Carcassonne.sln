@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Web Developer Express 2010
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carcassonne", "Carcassonne\Carcassonne.csproj", "{E03D363E-1A0A-4534-9355-BCC829AE218E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carcassonne.Web", "Carcassonne.Web\Carcassonne.Web.csproj", "{36D2CD81-625E-4566-9B36-9BAFC4366B41}"

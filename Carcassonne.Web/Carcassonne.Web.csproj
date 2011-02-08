@@ -51,10 +51,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CarcassonneTestPage.aspx" />
-    <Content Include="CarcassonneTestPage.html" />
     <Content Include="ClientBin\Carcassonne.xap" />
-    <Content Include="Silverlight.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

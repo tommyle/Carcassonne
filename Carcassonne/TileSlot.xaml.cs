@@ -12,9 +12,9 @@ using System.Windows.Shapes;
 
 namespace Carcassonne
 {
-    public partial class BlankTile : UserControl
+    public partial class TileSlot : UserControl
     {
-        public BlankTile()
+        public TileSlot()
         {
             InitializeComponent();
         }
