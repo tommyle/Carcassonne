@@ -22,8 +22,6 @@ namespace Carcassonne
 		private Point clickPosition;
 		private DateTime lastClick = new DateTime();
 		private double CLICK_SPEED = 0.15;
-		private double tileClickX;
-		private double tileClickY;
 
 		List<Tile> _tiles = new List<Tile>();
 		List<Tile> _tilesPlayed = new List<Tile>();
@@ -53,22 +51,18 @@ namespace Carcassonne
 			// Place a D tile in the centre of the board
 			foreach (Tile t in _tiles)
 			{
-				bool tileFound = false;
-
 				if (t.tileType == Tile.TileType.D)
 				{
 					_tilesPlayed.Add(t);
 					_tiles.Remove(t);
+					t.hasBeenPlaced = true;
 
 					gameSurface.Children.Add(t);
-					Canvas.SetLeft(_tilesPlayed[0].rect, Canvas.GetLeft(_tileSlots[38]));
-					Canvas.SetTop(_tilesPlayed[0].rect, Canvas.GetTop(_tileSlots[38]));
+					Canvas.SetLeft(t.rect, Canvas.GetLeft(_tileSlots[38]));
+					Canvas.SetTop(t.rect, Canvas.GetTop(_tileSlots[38]));
 
-					tileFound = true;
-				}
-
-				if (tileFound)
 					break;
+				}
 			}
 		}
 
@@ -156,9 +150,9 @@ namespace Carcassonne
 
 		void checkmark_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
-			if (isCheckmarkMouseCapture)
+			if (isCheckmarkMouseCapture && tileInPlay != null)
 			{
-				if (_tiles.Count > 0 && tileInPlay != null)
+				if (tileInPlay.isSlotted && _tiles.Count > 0)
 				{
 					((Rectangle)sender).ReleaseMouseCapture();
 
@@ -178,33 +172,40 @@ namespace Carcassonne
 
 		void rect_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
-			((Tile)sender).ReleaseMouseCapture();
+			Tile tile = (Tile)sender;
+
+			tile.ReleaseMouseCapture();
 			isRectMouseCapture = false;
 
-			TimeSpan clickSpeed = DateTime.Now - lastClick;
-
-			if (clickSpeed.TotalSeconds < CLICK_SPEED)
+			if (tile.Equals(tileInPlay))
 			{
-				((Tile)sender).Rotate();
-			}
-			else
-			{
-				double xCentre = Canvas.GetLeft(((Tile)sender).rect) + ((Tile)sender).rect.Width / 2;
-				double yCentre = Canvas.GetTop(((Tile)sender).rect) + ((Tile)sender).rect.Height / 2;
+				TimeSpan clickSpeed = DateTime.Now - lastClick;
 
-				foreach (TileSlot t in _tileSlots)
+				if (clickSpeed.TotalSeconds < CLICK_SPEED)
 				{
-					// The plus/minus 1/2 accounts for the gap
-					double x1Bound = Canvas.GetLeft(t) - 1;
-					double x2Bound = x1Bound + t.rect.Width + 2;
-					double y1Bound = Canvas.GetTop(t) - 1;
-					double y2Bound = y1Bound + t.rect.Height + 2;
+					((Tile)sender).Rotate();
+				}
+				else
+				{
+					double xCentre = Canvas.GetLeft(tile.rect) + tile.rect.Width / 2;
+					double yCentre = Canvas.GetTop(tile.rect) + tile.rect.Height / 2;
 
-					if (xCentre >= x1Bound && xCentre <= x2Bound && yCentre >= y1Bound && yCentre <= y2Bound)
+					foreach (TileSlot t in _tileSlots)
 					{
-						Canvas.SetLeft(((Tile)sender).rect, x1Bound);
-						Canvas.SetTop(((Tile)sender).rect, y1Bound);
+						// The plus/minus 1/2 accounts for the gap
+						double x1Bound = Canvas.GetLeft(t) - 1;
+						double x2Bound = x1Bound + t.rect.Width + 2;
+						double y1Bound = Canvas.GetTop(t) - 1;
+						double y2Bound = y1Bound + t.rect.Height + 2;
+
+						if (xCentre >= x1Bound && xCentre <= x2Bound && yCentre >= y1Bound && yCentre <= y2Bound)
+						{
+							Canvas.SetLeft(tile.rect, x1Bound);
+							Canvas.SetTop(tile.rect, y1Bound);
+							tile.isSlotted = true;
+						}
 					}
+
 				}
 			}
 		}
@@ -221,9 +222,6 @@ namespace Carcassonne
 				//Canvas.SetZIndex((Tile)sender, 99);
 				//((Tile)sender).SetValue(Canvas.ZIndexProperty, 99);
 
-				tileClickX = clickPosition.X;
-				tileClickY = clickPosition.Y;
-
 				isRectMouseCapture = true;
 				lastClick = DateTime.Now;
 			}
@@ -234,16 +232,17 @@ namespace Carcassonne
 			if (isRectMouseCapture)
 			{
 				TimeSpan clickSpeed = DateTime.Now - lastClick;
+				Tile tile = (Tile)sender;
 
 				if (clickSpeed.TotalSeconds >= CLICK_SPEED)
 				{
-					Canvas.SetLeft(((Tile)sender).rect, e.GetPosition(this).X - clickPosition.X);
-					Canvas.SetTop(((Tile)sender).rect, e.GetPosition(this).Y - clickPosition.Y);
+					Canvas.SetLeft(tile.rect, e.GetPosition(this).X - clickPosition.X);
+					Canvas.SetTop(tile.rect, e.GetPosition(this).Y - clickPosition.Y);
 
-					double xCentre = Canvas.GetLeft(((Tile)sender).rect) + ((Tile)sender).rect.Width / 2;
-					double yCentre = Canvas.GetTop(((Tile)sender).rect) + ((Tile)sender).rect.Height / 2;
+					double xCentre = Canvas.GetLeft(tile.rect) + tile.rect.Width / 2;
+					double yCentre = Canvas.GetTop(tile.rect) + tile.rect.Height / 2;
 
-					Canvas.SetZIndex(((Tile)sender), 0);
+					Canvas.SetZIndex(tile, 0);
 
 					foreach (TileSlot t in _tileSlots)
 					{

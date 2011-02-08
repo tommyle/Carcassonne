@@ -64,6 +64,7 @@ namespace Carcassonne
         public TileType tileType = new TileType();
         public SourceImages sourceImages = new SourceImages();
 		public bool hasBeenPlaced = false;
+		public bool isSlotted = false;
 
         public Tile(TileType inTileType)
         {
