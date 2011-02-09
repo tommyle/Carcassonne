@@ -14,10 +14,10 @@ namespace Carcassonne
 {
 	public partial class MainPage : UserControl
 	{
+		private const int TILES_IN_A_ROW = 11;
+
 		private Turn turn = new Turn();
-
 		private Boolean isCheckmarkMouseCapture = false;
-
 		private Boolean isRectMouseCapture = false;
 		private Point clickPosition;
 		private DateTime lastClick = new DateTime();
@@ -25,7 +25,7 @@ namespace Carcassonne
 
 		List<Tile> _tiles = new List<Tile>();
 		List<Tile> _tilesPlayed = new List<Tile>();
-		List<TileSlot> _tileSlots = new List<TileSlot>();
+		List<TileSlot> _slots = new List<TileSlot>();
 		Tile tileInPlay;
 
 		Random _randomizer = new Random();
@@ -51,15 +51,20 @@ namespace Carcassonne
 			// Place a D tile in the centre of the board
 			foreach (Tile t in _tiles)
 			{
-				if (t.tileType == Tile.TileType.D)
+				if (t.tileType == TileType.D)
 				{
 					_tilesPlayed.Add(t);
 					_tiles.Remove(t);
-					t.hasBeenPlaced = true;
+					
+					TileSlot center = FindSlotByNumber(39);
 
 					gameSurface.Children.Add(t);
-					Canvas.SetLeft(t.rect, Canvas.GetLeft(_tileSlots[38]));
-					Canvas.SetTop(t.rect, Canvas.GetTop(_tileSlots[38]));
+
+					InsertTileInSlot(center, t);
+					ConfirmTileInsertion(t);
+
+					//Canvas.SetLeft(t.rect, Canvas.GetLeft(_slots[38]));
+					//Canvas.SetTop(t.rect, Canvas.GetTop(_slots[38]));
 
 					break;
 				}
@@ -68,39 +73,39 @@ namespace Carcassonne
 
 		void CreateTiles()
 		{
-			Dictionary<Tile.TileType, int> tileList = new Dictionary<Tile.TileType, int>();
-			tileList.Add(Tile.TileType.A, 2);
-			tileList.Add(Tile.TileType.B, 4);
-			tileList.Add(Tile.TileType.C, 1);
-			tileList.Add(Tile.TileType.D, 4);
-			tileList.Add(Tile.TileType.E, 5);
-			tileList.Add(Tile.TileType.F, 2);
-			tileList.Add(Tile.TileType.G, 1);
-			tileList.Add(Tile.TileType.H, 3);
-			tileList.Add(Tile.TileType.I, 2);
-			tileList.Add(Tile.TileType.J, 3);
-			tileList.Add(Tile.TileType.K, 3);
-			tileList.Add(Tile.TileType.L, 3);
-			tileList.Add(Tile.TileType.M, 2);
-			tileList.Add(Tile.TileType.N, 3);
-			tileList.Add(Tile.TileType.O, 2);
-			tileList.Add(Tile.TileType.P, 3);
-			tileList.Add(Tile.TileType.Q, 1);
-			tileList.Add(Tile.TileType.R, 3);
-			tileList.Add(Tile.TileType.S, 2);
-			tileList.Add(Tile.TileType.T, 1);
-			tileList.Add(Tile.TileType.U, 8);
-			tileList.Add(Tile.TileType.V, 9);
-			tileList.Add(Tile.TileType.W, 4);
-			tileList.Add(Tile.TileType.X, 1);
+			Dictionary<TileType, int> tileList = new Dictionary<TileType, int>();
+			tileList.Add(TileType.A, 2);
+			tileList.Add(TileType.B, 4);
+			tileList.Add(TileType.C, 1);
+			tileList.Add(TileType.D, 4);
+			tileList.Add(TileType.E, 5);
+			tileList.Add(TileType.F, 2);
+			tileList.Add(TileType.G, 1);
+			tileList.Add(TileType.H, 3);
+			tileList.Add(TileType.I, 2);
+			tileList.Add(TileType.J, 3);
+			tileList.Add(TileType.K, 3);
+			tileList.Add(TileType.L, 3);
+			tileList.Add(TileType.M, 2);
+			tileList.Add(TileType.N, 3);
+			tileList.Add(TileType.O, 2);
+			tileList.Add(TileType.P, 3);
+			tileList.Add(TileType.Q, 1);
+			tileList.Add(TileType.R, 3);
+			tileList.Add(TileType.S, 2);
+			tileList.Add(TileType.T, 1);
+			tileList.Add(TileType.U, 8);
+			tileList.Add(TileType.V, 9);
+			tileList.Add(TileType.W, 4);
+			tileList.Add(TileType.X, 1);
 
 			foreach (Key key in tileList.Keys)
 			{
-				int numTiles = tileList[(Tile.TileType)key];
+				int numTiles = tileList[(TileType)key];
 
 				for (int i = 0; i < numTiles; i++)
 				{
-					Tile t = new Tile((Tile.TileType)key);
+					Tile t = new Tile((TileType)key);
 
 
 					t.MouseLeftButtonUp += new MouseButtonEventHandler(rect_MouseLeftButtonUp);
@@ -123,19 +128,43 @@ namespace Carcassonne
 
 		void CreateTileSlots()
 		{
-			for (int i = 0; i < 11; i++)
+			int k = 1;
+			for (int i = 0; i < 7; i++)
 			{
-				for (int j = 0; j < 7; j++)
+				for (int j = 0; j < 11; j++)
 				{
-					TileSlot t = new TileSlot();
 
-					_tileSlots.Add(t);
+					TileSlot t = new TileSlot();
+					t.number = k++;
+
+					_slots.Add(t);
 					gameSurface.Children.Add(t);
 
-					Canvas.SetLeft(t, 80 + i * 79);
-					Canvas.SetTop(t, 100 + j * 79);
+					Canvas.SetLeft(t, 80 + j * 79);
+					Canvas.SetTop(t, 100 + i * 79);
+
+					t.N = (i == 0) ? null : FindSlotByNumber(t.number - TILES_IN_A_ROW);
+					if (t.N != null)
+						t.N.S = t;
+
+					t.S = null;
+
+					t.W = (j == 0) ? null : FindSlotByNumber(t.number - 1);
+					if (t.W != null)
+						t.W.E = t;
+
+					t.E = null;
 				}
 			}
+		}
+
+		private TileSlot FindSlotByNumber(int p)
+		{
+			foreach (TileSlot slot in _slots)
+				if (slot.number == p)
+					return slot;
+
+			return null;
 		}
 
 		#endregion
@@ -156,7 +185,7 @@ namespace Carcassonne
 				{
 					((Rectangle)sender).ReleaseMouseCapture();
 
-					tileInPlay.hasBeenPlaced = true;
+					ConfirmTileInsertion(tileInPlay);
 
 					_tilesPlayed.Add(tileInPlay);
 					DealTile();
@@ -182,30 +211,20 @@ namespace Carcassonne
 				TimeSpan clickSpeed = DateTime.Now - lastClick;
 
 				if (clickSpeed.TotalSeconds < CLICK_SPEED)
-				{
 					((Tile)sender).Rotate();
-				}
 				else
 				{
-					double xCentre = Canvas.GetLeft(tile.rect) + tile.rect.Width / 2;
-					double yCentre = Canvas.GetTop(tile.rect) + tile.rect.Height / 2;
-
-					foreach (TileSlot t in _tileSlots)
+					TileSlot slot = FindNearestSlot(tile);
+					if (slot != null && IsValidSlot(slot, tile))
 					{
-						// The plus/minus 1/2 accounts for the gap
-						double x1Bound = Canvas.GetLeft(t) - 1;
-						double x2Bound = x1Bound + t.rect.Width + 2;
-						double y1Bound = Canvas.GetTop(t) - 1;
-						double y2Bound = y1Bound + t.rect.Height + 2;
-
-						if (xCentre >= x1Bound && xCentre <= x2Bound && yCentre >= y1Bound && yCentre <= y2Bound)
-						{
-							Canvas.SetLeft(tile.rect, x1Bound);
-							Canvas.SetTop(tile.rect, y1Bound);
-							tile.isSlotted = true;
-						}
+						InsertTileInSlot(slot, tile);
 					}
-
+					else
+					{
+						Canvas.SetLeft(tile.rect, 10);
+						Canvas.SetTop(tile.rect, 10);
+						tile.slot = null;
+					}
 				}
 			}
 		}
@@ -214,13 +233,10 @@ namespace Carcassonne
 		{
 			Tile target = (Tile)sender;
 
-			if (!target.hasBeenPlaced)
+			if (target.canBeMoved)
 			{
 				clickPosition = e.GetPosition(target.rect as UIElement);
 				target.CaptureMouse();
-
-				//Canvas.SetZIndex((Tile)sender, 99);
-				//((Tile)sender).SetValue(Canvas.ZIndexProperty, 99);
 
 				isRectMouseCapture = true;
 				lastClick = DateTime.Now;
@@ -239,36 +255,32 @@ namespace Carcassonne
 					Canvas.SetLeft(tile.rect, e.GetPosition(this).X - clickPosition.X);
 					Canvas.SetTop(tile.rect, e.GetPosition(this).Y - clickPosition.Y);
 
-					double xCentre = Canvas.GetLeft(tile.rect) + tile.rect.Width / 2;
-					double yCentre = Canvas.GetTop(tile.rect) + tile.rect.Height / 2;
-
 					Canvas.SetZIndex(tile, 0);
 
-					foreach (TileSlot t in _tileSlots)
-					{
-						double x1Bound = Canvas.GetLeft(t) - 1;
-						double x2Bound = x1Bound + t.rect.Width + 2;
-						double y1Bound = Canvas.GetTop(t) - 1;
-						double y2Bound = y1Bound + t.rect.Height + 2;
-
-						if (xCentre >= x1Bound && xCentre <= x2Bound && yCentre >= y1Bound && yCentre <= y2Bound)
-						{
-							SolidColorBrush brush = new SolidColorBrush();
-							brush.Color = Color.FromArgb(255, 154, 205, 50);
-							t.rect.Fill = brush;
-						}
-						else
-						{
-							SolidColorBrush brush = new SolidColorBrush();
-							brush.Color = Color.FromArgb(255, 0, 0, 0);
-							t.rect.Fill = brush;
-						}
-					}
+					TileSlot slot = FindNearestSlot(tile);
+					if(slot != null)
+						HighlightTileSlot(slot);
+					else
+						ClearTileSlotHighlights();
 				}
 			}
 		}
 
+		private void HighlightTileSlot(TileSlot slot)
+		{
+			ClearTileSlotHighlights();
+			slot.rect.Fill = new SolidColorBrush(Color.FromArgb(255, 154, 205, 50));
+		}
+
+		private void ClearTileSlotHighlights()
+		{
+			SolidColorBrush clearBrush = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
+			foreach (TileSlot s in _slots)
+				s.rect.Fill = clearBrush;
+		}
 		#endregion
+
+		#region helpers
 
 		private void DealTile()
 		{
@@ -276,5 +288,87 @@ namespace Carcassonne
 			turn.StartTurn(tileInPlay, this);
 			_tiles.RemoveAt(0);
 		}
+
+		private TileSlot FindNearestSlot(Tile tile)
+		{
+			double xCentre = Canvas.GetLeft(tile.rect) + tile.rect.Width / 2;
+			double yCentre = Canvas.GetTop(tile.rect) + tile.rect.Height / 2;
+
+			foreach (TileSlot slot in _slots)
+			{
+				// The plus/minus 1/2 accounts for the gap
+				double x1Bound = Canvas.GetLeft(slot) - 1;
+				double x2Bound = x1Bound + slot.rect.Width + 2;
+				double y1Bound = Canvas.GetTop(slot) - 1;
+				double y2Bound = y1Bound + slot.rect.Height + 2;
+
+				if (xCentre >= x1Bound && xCentre <= x2Bound && yCentre >= y1Bound && yCentre <= y2Bound)
+					return slot;
+			}
+
+			return null;
+		}
+
+		private bool IsValidSlot(TileSlot slot, Tile tile)
+		{
+
+			// flag to explore for adjacent files as we check for
+			// other failure conditions
+			bool adjacent = false;
+			
+			// if the target slot has a tile to the North
+			// and if that tile has incompatible borders,
+			// then reject
+			if (slot.hasN() && slot.N.hasTile())
+			{
+				adjacent = true;
+				if(slot.N.tile.borders.S != tile.borders.N)
+					return false;
+			}
+
+			if(slot.hasS() && slot.S.hasTile())
+			{
+				adjacent = true;
+				if(slot.S.tile.borders.N != tile.borders.S)
+					return false;
+			}
+
+			if(slot.hasE() && slot.E.hasTile())
+			{
+				adjacent = true;
+				if (slot.E.tile.borders.W != tile.borders.E)
+					return false;
+			}
+
+			if(slot.hasW() && slot.W.hasTile())
+			{
+				adjacent = true;
+				if(slot.W.tile.borders.E != tile.borders.W)
+					return false;
+			}
+
+			// if no adjacent tiles were found, then the slot is not valid
+			if(!adjacent)
+				return false;
+			
+			return true;
+		}
+		
+		private void InsertTileInSlot(TileSlot slot, Tile tile)
+		{
+			// position the tile on the slot
+			// and tell the tile which slot its in
+			Canvas.SetLeft(tile.rect, Canvas.GetLeft(slot) - 1);
+			Canvas.SetTop(tile.rect, Canvas.GetTop(slot) - 1);
+			tile.slot = slot;
+		}
+
+		private void ConfirmTileInsertion(Tile tile)
+		{
+			// only assign the tile to the slot when the checkmark is clicked
+			tile.slot.tile = tile;
+		}
+
+		#endregion
 	}
 }

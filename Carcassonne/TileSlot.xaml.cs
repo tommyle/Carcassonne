@@ -12,11 +12,41 @@ using System.Windows.Shapes;
 
 namespace Carcassonne
 {
-    public partial class TileSlot : UserControl
-    {
-        public TileSlot()
-        {
-            InitializeComponent();
-        }
-    }
+	public partial class TileSlot : UserControl
+	{
+		public TileSlot N = null, S = null, E = null, W = null;
+		public Tile tile = null;
+		public int number;
+
+		public TileSlot()
+		{
+			InitializeComponent();
+			number = 0;
+		}
+
+		public bool hasN()
+		{
+			return (N != null);
+		}
+
+		public bool hasS()
+		{
+			return (S != null);
+		}
+
+		public bool hasE()
+		{
+			return (E != null);
+		}
+
+		public bool hasW()
+		{
+			return (W != null);
+		}
+
+		public bool hasTile()
+		{
+			return !(tile == null);
+		}
+	}
 }
