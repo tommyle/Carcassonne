@@ -18,3 +18,8 @@ C:\git\Carcassonne\Carcassonne.Web\bin\Carcassonne.Web.pdb
 C:\git\Carcassonne\Carcassonne.Web\obj\Debug\ResolveAssemblyReference.cache
 C:\git\Carcassonne\Carcassonne.Web\obj\Debug\Carcassonne.Web.dll
 C:\git\Carcassonne\Carcassonne.Web\obj\Debug\Carcassonne.Web.pdb
+C:\Users\Arizona\.ssh\Carcassonne\Carcassonne.Web\bin\Carcassonne.Web.dll
+C:\Users\Arizona\.ssh\Carcassonne\Carcassonne.Web\bin\Carcassonne.Web.pdb
+C:\Users\Arizona\.ssh\Carcassonne\Carcassonne.Web\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Arizona\.ssh\Carcassonne\Carcassonne.Web\obj\Debug\Carcassonne.Web.dll
+C:\Users\Arizona\.ssh\Carcassonne\Carcassonne.Web\obj\Debug\Carcassonne.Web.pdb

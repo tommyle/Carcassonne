@@ -23,6 +23,9 @@ namespace Carcassonne
 		private DateTime lastClick = new DateTime();
 		private double CLICK_SPEED = 0.15;
 
+        private const int MAX_PLAYERS = 4;
+        private List<Player> players = new List<Player>();
+
 		List<Tile> _tiles = new List<Tile>();
 		List<Tile> _tilesPlayed = new List<Tile>();
 		List<TileSlot> _slots = new List<TileSlot>();
@@ -33,6 +36,7 @@ namespace Carcassonne
 		public MainPage()
 		{
 			InitializeComponent();
+            CreatePlayers();
 			CreateTileSlots();
 			CreateTiles();
 			InitializeBoard();
@@ -43,7 +47,19 @@ namespace Carcassonne
 
 		#region init
 
-		void InitializeBoard()
+        void CreatePlayers()
+        {
+            Player count = new Player(0, PortraitType.Count);
+            players.Add(count);
+            Player warlock = new Player(1, PortraitType.Warlock);
+            players.Add(warlock);
+            Player maid = new Player(2, PortraitType.Maid);
+            players.Add(maid);
+            Player servant = new Player(3, PortraitType.Servant);
+            players.Add(servant);
+        }
+
+        void InitializeBoard()
 		{
 			checkmark.MouseLeftButtonDown += new MouseButtonEventHandler(checkmark_MouseLeftButtonDown);
 			checkmark.MouseLeftButtonUp += new MouseButtonEventHandler(checkmark_MouseLeftButtonUp);
@@ -69,6 +85,89 @@ namespace Carcassonne
 					break;
 				}
 			}
+
+            // Place the player's portrait and meeples on the board
+            foreach (Player p in players)
+            {
+                int top = 0;
+                int left = 0;
+
+                switch (p.playerId)
+                {
+                    case 0:
+                        left = 670;
+                        top = 12;
+
+                        Canvas.SetLeft(p.portrait, left);
+                        Canvas.SetTop(p.portrait, top);
+                        gameSurface.Children.Add(p.portrait);
+
+                        left -= 60;
+
+                        for (int i = 0; i < p.meeples.Count; i++)
+                        {
+                            Canvas.SetLeft(p.meeples[i], left - i * 52);
+                            Canvas.SetTop(p.meeples[i], top);
+                            gameSurface.Children.Add(p.meeples[i]);
+                        }
+
+                        break;
+                    case 1:
+                        left = 946;
+                        top = 530;
+
+                        Canvas.SetLeft(p.portrait, left);
+                        Canvas.SetTop(p.portrait, top);
+                        gameSurface.Children.Add(p.portrait);
+
+                        top -= 60;
+
+                        for (int i = 0; i < p.meeples.Count; i++)
+                        {
+                            Canvas.SetLeft(p.meeples[i], left + 14);
+                            Canvas.SetTop(p.meeples[i], top - i * 52);
+                            gameSurface.Children.Add(p.meeples[i]);
+                        }
+
+                        break;
+                    case 2:
+                        left = 290;
+                        top = 686;
+
+                        Canvas.SetLeft(p.portrait, left);
+                        Canvas.SetTop(p.portrait, top);
+                        gameSurface.Children.Add(p.portrait);
+
+                        left += 80;
+
+                        for (int i = 0; i < p.meeples.Count; i++)
+                        {
+                            Canvas.SetLeft(p.meeples[i], left + i * 52);
+                            Canvas.SetTop(p.meeples[i], top + 17);
+                            gameSurface.Children.Add(p.meeples[i]);
+                        }
+
+                        break;
+                    default:
+                        left = 2;
+                        top = 150;
+
+                        Canvas.SetLeft(p.portrait, left);
+                        Canvas.SetTop(p.portrait, top);
+                        gameSurface.Children.Add(p.portrait);
+
+                        top += 80;
+
+                        for (int i = 0; i < p.meeples.Count; i++)
+                        {
+                            Canvas.SetLeft(p.meeples[i], left);
+                            Canvas.SetTop(p.meeples[i], top + i * 52);
+                            gameSurface.Children.Add(p.meeples[i]);
+                        }
+
+                        break;
+                }
+            }
 		}
 
 		void CreateTiles()

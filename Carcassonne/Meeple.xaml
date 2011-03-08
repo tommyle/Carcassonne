@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="Carcassonne.Meeple"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="56" d:DesignWidth="56">
+
+    <Canvas x:Name="LayoutRoot" Background="Transparent">
+        <Rectangle x:Name="rect" 
+                   Width="56" Height="56"
+                   HorizontalAlignment="Left">
+            <Rectangle.Fill>
+                <ImageBrush x:Name="meepleImage">
+                    <ImageBrush.RelativeTransform>
+                        <RotateTransform x:Name="rotation" CenterX="0.5" CenterY="0.5" Angle="0" />
+                    </ImageBrush.RelativeTransform>
+                </ImageBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+    </Canvas>
+</UserControl>

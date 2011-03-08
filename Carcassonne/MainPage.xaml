@@ -10,8 +10,8 @@
         <Image Source="Media/table.jpg" Opacity="1" Canvas.Left="0" Canvas.Top="0" DataContext="{Binding}" />
 
         <Rectangle x:Name="checkmark" 
-                   Width="76" Height="76"
-                   HorizontalAlignment="Left" Canvas.Left="936" Canvas.Top="12">
+                   Width="70" Height="70"
+                   HorizontalAlignment="Left" Canvas.Left="942" Canvas.Top="686">
             <Rectangle.Fill>
                 <ImageBrush x:Name="tileImage" ImageSource="Media/checkmark.png">
                     <ImageBrush.RelativeTransform>

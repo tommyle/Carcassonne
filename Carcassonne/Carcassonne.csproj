@@ -72,6 +72,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Meeple.xaml.cs">
+      <DependentUpon>Meeple.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Portrait.xaml.cs">
+      <DependentUpon>Portrait.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TileSlot.xaml.cs">
       <DependentUpon>TileSlot.xaml</DependentUpon>
     </Compile>
@@ -105,6 +111,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Media\Icons\m_yellow.png" />
     <Resource Include="Media\table.jpg" />
     <Resource Include="Media\Tiles\E.png" />
     <Resource Include="Media\Tiles\H.png" />
@@ -147,6 +154,35 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\OutOfBrowserSettings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Meeple.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\Icons\Count.png" />
+    <Resource Include="Media\Icons\m_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\Icons\Countess.png" />
+    <Resource Include="Media\Icons\Fortune_Teller.png" />
+    <Resource Include="Media\Icons\Hans.png" />
+    <Resource Include="Media\Icons\Juggler.png" />
+    <Resource Include="Media\Icons\Maid.png" />
+    <Resource Include="Media\Icons\m_green.png" />
+    <Resource Include="Media\Icons\m_purple.png" />
+    <Resource Include="Media\Icons\m_red.png" />
+    <Resource Include="Media\Icons\Servant.png" />
+    <Resource Include="Media\Icons\Warlock.png" />
+    <Resource Include="Media\Icons\Witch.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Portrait.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
