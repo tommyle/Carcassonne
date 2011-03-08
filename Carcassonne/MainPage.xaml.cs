@@ -16,7 +16,7 @@ namespace Carcassonne
 	{
 		private const int TILES_IN_A_ROW = 11;
 
-		private Turn turn = new Turn();
+        private Turn turn = new Turn();
 		private Boolean isCheckmarkMouseCapture = false;
 		private Boolean isRectMouseCapture = false;
 		private Point clickPosition;
@@ -29,7 +29,6 @@ namespace Carcassonne
 		List<Tile> _tiles = new List<Tile>();
 		List<Tile> _tilesPlayed = new List<Tile>();
 		List<TileSlot> _slots = new List<TileSlot>();
-		Tile tileInPlay;
 
 		Random _randomizer = new Random();
 
@@ -41,8 +40,8 @@ namespace Carcassonne
 			CreateTiles();
 			InitializeBoard();
 
-			// initialize game
-			DealTile();
+            turn.StartTurn(ref _tiles, this);
+            ShowValidSlots();
 		}
 
 		#region init
@@ -77,10 +76,7 @@ namespace Carcassonne
 					gameSurface.Children.Add(t);
 
 					InsertTileInSlot(center, t);
-					ConfirmTileInsertion(t);
-
-					//Canvas.SetLeft(t.rect, Canvas.GetLeft(_slots[38]));
-					//Canvas.SetTop(t.rect, Canvas.GetTop(_slots[38]));
+                    t.slot.tile = t;
 
 					break;
 				}
@@ -212,15 +208,6 @@ namespace Carcassonne
 					t.MouseMove += new MouseEventHandler(rect_MouseMove);
 
 					_tiles.Add(t);
-					//gameSurface.Children.Add(t);
-
-					/*
-					double x = (double)_randomizer.Next(1, (int)(this.Width));
-					double y = (double)_randomizer.Next(1, (int)(this.Height));
-
-					Canvas.SetLeft(t, 100);
-					Canvas.SetTop(t, 100);
-					 */
 				}
 			}
 		}
@@ -278,20 +265,34 @@ namespace Carcassonne
 
 		void checkmark_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
-			if (isCheckmarkMouseCapture && tileInPlay != null)
-			{
-				if (tileInPlay.isSlotted && _tiles.Count > 0)
-				{
-					((Rectangle)sender).ReleaseMouseCapture();
+            /* Turn Progression
+             * 1. Place Tile
+             * 2. Confirm Placement
+             * 3. Start Meeple Placement
+             * 4. Confirm Meeple Placement
+             * 5. Start New Turn
+             */
 
-					ConfirmTileInsertion(tileInPlay);
-
-					_tilesPlayed.Add(tileInPlay);
-					DealTile();
-
-					isCheckmarkMouseCapture = false;
-				}
-			}
+            if (isCheckmarkMouseCapture)
+            {
+                if (turn.mode.Equals(Mode.PlaceTile))
+                {
+                    if (turn.ConfirmTilePlacement(ref _tiles))
+                    {
+                        ((Rectangle)sender).ReleaseMouseCapture();
+                        isCheckmarkMouseCapture = false;
+                        turn.StartMeeplePlacement(this);
+                    }
+                }
+                else if (turn.mode.Equals(Mode.PlaceMeeple))
+                {
+                    if (turn.ConfirmMeeplePlacement(this))
+                    {
+                        turn.StartTurn(ref _tiles, this);
+                        ShowValidSlots();
+                    }
+                }
+            }
 		}
 
 		#endregion
@@ -302,29 +303,32 @@ namespace Carcassonne
 		{
 			Tile tile = (Tile)sender;
 
-			tile.ReleaseMouseCapture();
-			isRectMouseCapture = false;
-
-			if (tile.Equals(tileInPlay))
+			if (isRectMouseCapture && tile.Equals(turn.activeTile))
 			{
+                tile.ReleaseMouseCapture();
+                isRectMouseCapture = false;
+
 				TimeSpan clickSpeed = DateTime.Now - lastClick;
 
-				if (clickSpeed.TotalSeconds < CLICK_SPEED)
-					((Tile)sender).Rotate();
-				else
-				{
-					TileSlot slot = FindNearestSlot(tile);
-					if (slot != null && IsValidSlot(slot, tile))
-					{
-						InsertTileInSlot(slot, tile);
-					}
-					else
-					{
-						Canvas.SetLeft(tile.rect, 10);
-						Canvas.SetTop(tile.rect, 10);
-						tile.slot = null;
-					}
-				}
+                if (clickSpeed.TotalSeconds < CLICK_SPEED)
+                {
+                    ((Tile)sender).Rotate();
+                    ShowValidSlots();
+                }
+                else
+                {
+                    TileSlot slot = FindNearestSlot(tile);
+                    if (slot != null && IsValidSlot(slot, tile))
+                    {
+                        InsertTileInSlot(slot, tile);
+                    }
+                    else
+                    {
+                        Canvas.SetLeft(tile.rect, 10);
+                        Canvas.SetTop(tile.rect, 10);
+                        tile.slot = null;
+                    }
+                }
 			}
 		}
 
@@ -332,7 +336,7 @@ namespace Carcassonne
 		{
 			Tile target = (Tile)sender;
 
-			if (target.canBeMoved)
+			if (turn.mode.Equals(Mode.PlaceTile) && target.canBeMoved)
 			{
 				clickPosition = e.GetPosition(target.rect as UIElement);
 				target.CaptureMouse();
@@ -380,13 +384,6 @@ namespace Carcassonne
 		#endregion
 
 		#region helpers
-
-		private void DealTile()
-		{
-			tileInPlay = _tiles[0];
-			turn.StartTurn(tileInPlay, this);
-			_tiles.RemoveAt(0);
-		}
 
 		private TileSlot FindNearestSlot(Tile tile)
 		{
@@ -462,11 +459,20 @@ namespace Carcassonne
 			tile.slot = slot;
 		}
 
-		private void ConfirmTileInsertion(Tile tile)
-		{
-			// only assign the tile to the slot when the checkmark is clicked
-			tile.slot.tile = tile;
-		}
+        private void ShowValidSlots()
+        {
+            foreach (TileSlot slot in _slots)
+            {
+                if (IsValidSlot(slot, turn.activeTile))
+                {
+                    slot.rect.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    slot.rect.Visibility = Visibility.Collapsed;
+                }
+            }
+        }
 
 		#endregion
 	}

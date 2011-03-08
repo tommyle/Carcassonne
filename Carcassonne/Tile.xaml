@@ -17,10 +17,7 @@
                     </ImageBrush.RelativeTransform>
                 </ImageBrush>
             </Rectangle.Fill>
-            <!--<Rectangle.RenderTransform>
-                <TranslateTransform x:Name="rectTranslateTransform" X="0" Y="0" Angle="45"/>
-                <RotateTransform x:Name="rectRotateTransform" Angle="0" />
-            </Rectangle.RenderTransform>-->
         </Rectangle>
+
     </Canvas>
 </UserControl>

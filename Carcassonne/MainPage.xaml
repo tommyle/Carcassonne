@@ -9,6 +9,40 @@
     <Canvas x:Name="gameSurface" Background="White">
         <Image Source="Media/table.jpg" Opacity="1" Canvas.Left="0" Canvas.Top="0" DataContext="{Binding}" />
 
+        <Rectangle x:Name="lights"
+            Width="1024"
+            Height="768"
+            Fill="Black"
+            Stroke="Black"
+            StrokeThickness="0" 
+            Opacity="0.6" Visibility="Collapsed"/>
+
+        <!--
+        <Rectangle
+                   Width="300" Height="300"
+                   HorizontalAlignment="Left" Canvas.Left="356" Canvas.Top="286">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="Media/Tiles/A.png">
+                    <ImageBrush.RelativeTransform>
+                        <RotateTransform x:Name="rotation" CenterX="0.5" CenterY="0.5" Angle="0"/>
+                    </ImageBrush.RelativeTransform>
+                </ImageBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <Rectangle
+                   Width="65" Height="65"
+                   HorizontalAlignment="Left" Canvas.Left="481" Canvas.Top="510">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="Media/Icons/empty.png"  Opacity="0.5">
+                    <ImageBrush.RelativeTransform>
+                        <RotateTransform CenterX="0.5" CenterY="0.5" Angle="0" />
+                    </ImageBrush.RelativeTransform>
+                </ImageBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        -->
+
         <Rectangle x:Name="checkmark" 
                    Width="70" Height="70"
                    HorizontalAlignment="Left" Canvas.Left="942" Canvas.Top="686">

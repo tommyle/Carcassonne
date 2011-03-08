@@ -13,6 +13,7 @@
             Fill="Black"
             Stroke="Green"
             StrokeThickness="0" 
-            Opacity="0.3"/>
+            Opacity="0.3"
+            Visibility="Visible"/>
     </Canvas>
 </UserControl>

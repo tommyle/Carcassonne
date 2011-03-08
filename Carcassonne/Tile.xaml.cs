@@ -16,11 +16,11 @@ namespace Carcassonne
     public partial class Tile : UserControl
     {
 		public TileSlot slot = null;
-
         public Orientation orientation = Orientation.N;
         public Border borders = new Border();
         public TileType tileType = new TileType();
         public SourceImages sourceImages = new SourceImages();
+        public List<Meeple> meeples = new List<Meeple>();
 		
 		public bool isSlotted
 		{
@@ -200,15 +200,6 @@ namespace Carcassonne
 
         public void Rotate()
         {
-			//if (orientation == Orientation.N)
-			//    orientation = Orientation.E;
-			//else if (orientation == Orientation.E)
-			//    orientation = Orientation.S;
-			//else if (orientation == Orientation.S)
-			//    orientation = Orientation.W;
-			//else
-			//    orientation = Orientation.N;
-
 			BorderType tmp = this.borders.N;
 
 			this.borders.N = this.borders.W;
@@ -217,6 +208,18 @@ namespace Carcassonne
 			this.borders.E = tmp;
 
             rotation.Angle += 90;
+        }
+
+        public void Grow()
+        {
+            rect.Width = 304;
+            rect.Height = 304;
+        }
+
+        public void Shrink()
+        {
+            rect.Width = 76;
+            rect.Height = 76;
         }
     }
 

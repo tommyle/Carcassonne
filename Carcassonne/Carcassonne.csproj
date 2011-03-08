@@ -111,6 +111,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Media\Icons\empty.png" />
     <Resource Include="Media\Icons\m_yellow.png" />
     <Resource Include="Media\table.jpg" />
     <Resource Include="Media\Tiles\E.png" />
